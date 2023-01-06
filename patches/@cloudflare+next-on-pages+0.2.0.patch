@@ -1,0 +1,42 @@
+diff --git a/node_modules/@cloudflare/next-on-pages/dist/index.js b/node_modules/@cloudflare/next-on-pages/dist/index.js
+# Necessary until https://github.com/cloudflare/next-on-pages/pull/11 is merged,
+# and https://github.com/cloudflare/next-on-pages/issues/17 is fixed.
+index 7592663..2d1bcf0 100644
+--- a/node_modules/@cloudflare/next-on-pages/dist/index.js
++++ b/node_modules/@cloudflare/next-on-pages/dist/index.js
+@@ -5868,35 +5868,6 @@ var prepVercel = async () => {
+       JSON.stringify({ projectId: "_", orgId: "_", settings: {} })
+     );
+   }
+-  console.log("\u26A1\uFE0F");
+-  console.log("\u26A1\uFE0F Installing 'vercel' CLI...");
+-  console.log("\u26A1\uFE0F");
+-  const vercelBuild = (0, import_child_process.spawn)("npm", ["install", "-D", "vercel"]);
+-  vercelBuild.stdout.on("data", (data2) => {
+-    const lines = data2.toString().split("\n");
+-    lines.map((line) => {
+-      console.log(`\u25B2 ${line}`);
+-    });
+-  });
+-  vercelBuild.stderr.on("data", (data2) => {
+-    const lines = data2.toString().split("\n");
+-    lines.map((line) => {
+-      console.log(`\u25B2 ${line}`);
+-    });
+-  });
+-  await new Promise((resolve2, reject) => {
+-    vercelBuild.on("close", (code) => {
+-      if (code === 0) {
+-        resolve2(null);
+-      } else {
+-        reject();
+-      }
+-    });
+-  });
+-  console.log("\u26A1\uFE0F");
+-  console.log("\u26A1\uFE0F");
+-  console.log("\u26A1\uFE0F Completed 'npx vercel build'.");
+-  console.log("\u26A1\uFE0F");
+ };
+ var buildVercel = async () => {
+   console.log("\u26A1\uFE0F");

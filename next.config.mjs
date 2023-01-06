@@ -31,9 +31,18 @@ const withMDX = withMDXFactory({
 const nextConfig = {
   experimental: {
     appDir: true,
+    // Support Cloudflare Pages
+    runtime: "experimental-edge",
   },
+  reactStrictMode: true,
+  swcMinify: true,
   // add mdx file support
   pageExtensions: ["ts", "tsx", "js", "jsx", "md", "mdx"],
+  images: {
+    // Cloudflare Pages can't run the optimiser, and their own optimiser costs
+    // money
+    unoptimized: true,
+  },
 };
 
 export default withMDX(nextConfig);
