@@ -1,0 +1,89 @@
+```yaml
+title: Btnp
+```
+
+# {title}
+
+The `btnp()` function is similar to [`btn()`](Btn "wikilink") except
+that it only reports that a button is on if it was not pressed during
+the previous frame. In other words, it returns `true` only if a given
+button was pressed just now, and does not report `true` again for the
+same button in the next frame even if it is held down.
+
+This is useful for detecting button presses that are meant to select
+menu options or initiate actions. If you were to use `btn()` to initiate
+an action, the player is likely to initiate the action multiple times
+that they didn't intend, because the button will register as on for
+multiple frames.
+
+`btnp()` implements a keyboard-like repeat mechanism: if the player
+holds the button for 15 frames, it registers as on again for one frame,
+then again every four frames after that. The frame counter resets when
+the player releases the button.
+
+Like `btn()`, `btnp()` can take a button number and a player number and
+return `true` or `false`, or can be called without arguments to return a
+bitfield of button states.
+
+See [`btn()`](Btn "wikilink") for a description of the arguments and
+return values.
+
+## Predefined button values
+
+The [P8SCII](P8SCII "wikilink") character set includes 26 special glyphs
+that can be typed by holding <kbd>Shift</kbd> and pressing a letter from
+<kbd>A</kbd> to <kbd>Z</kbd> in the code editor or the prompt. PICO-8
+pre-defines 26 single-character global variables with names from this
+set of glyphs and gives them useful values. In the case of `btnp()` the
+ones associated with U, D, L, R, O, and X (⬆️, ⬇️, ⬅️, ➡️, 🅾️, and ❎)
+are useful, because they represent the corresponding button indices 0
+through 5.
+
+These can be used as an argument to `btnp()` (or
+[btn()](Btn "wikilink")) to represent the corresponding button. Do *not*
+surround the value in quotes, because these are not strings, they are
+predefined global variables with single glyphs for names.
+
+``` lua
+-- test for the "left" button, typed as shift + l
+if btnp(⬅️) and x > 0 then
+ x -= 1
+end
+```
+
+## Examples
+
+``` lua
+sel = 0
+items = {"a", "b", "c", "d",
+         "e", "f", "g", "h"}
+
+function _update()
+  if (btnp(0) and sel > 0) sel -= 1
+  if (btnp(1) and sel < #items - 1) sel += 1
+end
+
+function _draw()
+  cls()
+
+  for i=1,#items do
+    print(items[i], 10 * i, 10, 7)
+  end
+
+  rect(8 + (sel * 10), 8,
+       14 + (sel * 10), 16,
+       8)
+end
+```
+
+Try replacing `btnp()` with `btn()` to see what happens.
+
+## See also
+
+- [Controllers](Controllers "wikilink")
+- [Configuration](Configuration "wikilink")
+- [SDL](SDL "wikilink")
+- [`btn()`](Btn "wikilink")
+
+[Category:Reference](Category:Reference "wikilink")
+[Category:API](Category:API "wikilink")
