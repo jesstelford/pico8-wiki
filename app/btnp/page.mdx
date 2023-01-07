@@ -4,11 +4,9 @@ title: Btnp
 
 # {title}
 
-zip
-
 ![p8sxii example](./p8scii-example.webp)
 
-The `btnp()` function is similar to [`btn()`](Btn "wikilink") except
+The `btnp()` function is similar to [`btn()`](/btn) except
 that it only reports that a button is on if it was not pressed during
 the previous frame. In other words, it returns `true` only if a given
 button was pressed just now, and does not report `true` again for the
@@ -29,12 +27,12 @@ Like `btn()`, `btnp()` can take a button number and a player number and
 return `true` or `false`, or can be called without arguments to return a
 bitfield of button states.
 
-See [`btn()`](Btn "wikilink") for a description of the arguments and
+See [`btn()`](/btn) for a description of the arguments and
 return values.
 
 ## Predefined button values
 
-The [P8SCII](P8SCII "wikilink") character set includes 26 special glyphs
+The [P8SCII](/p8scii) character set includes 26 special glyphs
 that can be typed by holding <kbd>Shift</kbd> and pressing a letter from
 <kbd>A</kbd> to <kbd>Z</kbd> in the code editor or the prompt. PICO-8
 pre-defines 26 single-character global variables with names from this
@@ -44,7 +42,7 @@ are useful, because they represent the corresponding button indices 0
 through 5.
 
 These can be used as an argument to `btnp()` (or
-[btn()](Btn "wikilink")) to represent the corresponding button. Do *not*
+[btn()](/btn)) to represent the corresponding button. Do *not*
 surround the value in quotes, because these are not strings, they are
 predefined global variables with single glyphs for names.
 
@@ -84,10 +82,10 @@ Try replacing `btnp()` with `btn()` to see what happens.
 
 ## See also
 
-- [Controllers](Controllers "wikilink")
-- [Configuration](Configuration "wikilink")
-- [SDL](SDL "wikilink")
-- [`btn()`](Btn "wikilink")
+- [Controllers](/controllers)
+- [Configuration](/configuration)
+- [SDL](/sdl)
+- [`btn()`](/btn)
 
 [Category:Reference](Category:Reference "wikilink")
 [Category:API](Category:API "wikilink")
