@@ -3,7 +3,7 @@ import type { PropsWithChildren } from "react";
 import type { MDXProps } from "mdx/types";
 import Image from "next/image";
 
-const components = {
+const defaultComponents = {
   ol: ({ children }: { children: React.ReactNode }) => (
     <ol style={{ listStyle: "inside decimal" }}>{children}</ol>
   ),
@@ -42,13 +42,18 @@ const components = {
   },
 };
 
-const PageLayout = ({ children, ...props }: PropsWithChildren) =>
+interface PageLayoutProps extends PropsWithChildren, MDXProps {}
+
+const PageLayout = ({ children, components, ...props }: PageLayoutProps) =>
   Children.map(children, (child) => {
     // Checking isValidElement is the safe way and avoids a
     // typescript error too.
     if (isValidElement(child)) {
       // Insert the components for MDX to render when converting from markdown
-      return cloneElement(child, { ...props, components } as MDXProps);
+      return cloneElement(child, {
+        ...props,
+        components: { ...defaultComponents, ...components },
+      } as PageLayoutProps);
     }
     return child;
   });
