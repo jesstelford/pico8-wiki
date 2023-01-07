@@ -2,6 +2,9 @@ import withMDXFactory from "@next/mdx";
 import remarkGfm from "remark-gfm";
 import remarkFrontmatter from "remark-frontmatter";
 import remarkMdxFrontmatter from "remark-mdx-frontmatter";
+import remarkUnwrapImages from "remark-unwrap-images";
+
+import { remarkStaticImage } from "./mdx-plugins/static-image.mjs";
 
 const withMDX = withMDXFactory({
   extension: /\.mdx?$/,
@@ -16,6 +19,8 @@ const withMDX = withMDXFactory({
       ],
       remarkMdxFrontmatter,
       remarkGfm,
+      remarkUnwrapImages,
+      remarkStaticImage,
     ],
     rehypePlugins: [],
     // If you use `MDXProvider`, uncomment the following line.
