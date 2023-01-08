@@ -14,6 +14,45 @@ export const remarkWrapInLayout = () => (tree, file, done) => {
   }
 
   tree.children.push(
+    // Ensure we don't ever accidentally trigger a "Dynamic" Next.js page.
+    // This wont be necessary once we're able to use `next export`.
+    {
+      type: "mdxjsEsm",
+      value: "export const dynamic = 'force-static'",
+      data: {
+        estree: {
+          type: "Program",
+          body: [
+            {
+              type: "ExportNamedDeclaration",
+              declaration: {
+                type: "VariableDeclaration",
+                declarations: [
+                  {
+                    type: "VariableDeclarator",
+                    id: {
+                      type: "Identifier",
+                      name: "dynamic",
+                    },
+                    init: {
+                      type: "Literal",
+                      value: "force-static",
+                      raw: "'force-static'",
+                    },
+                  },
+                ],
+                kind: "const",
+              },
+              specifiers: [],
+              source: null,
+            },
+          ],
+          sourceType: "module",
+          comments: [],
+        },
+      },
+    },
+
     // Import and render our page layout component
     {
       type: "mdxjsEsm",
