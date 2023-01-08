@@ -42,20 +42,27 @@ const defaultComponents = {
   },
 };
 
-interface PageLayoutProps extends PropsWithChildren, MDXProps {}
+interface PageLayoutProps extends PropsWithChildren, MDXProps {
+  matter: {
+    [key: string]: unknown;
+  };
+}
 
-const PageLayout = ({ children, components, ...props }: PageLayoutProps) =>
-  Children.map(children, (child) => {
+const PageLayout = ({
+  children,
+  components /*, matter: { _next } TODO: Use this to render a "Edit on GitHub link" */,
+}: PageLayoutProps) => {
+  return Children.map(children, (child) => {
     // Checking isValidElement is the safe way and avoids a
     // typescript error too.
     if (isValidElement(child)) {
-      // Insert the components for MDX to render when converting from markdown
       return cloneElement(child, {
-        ...props,
+        // Insert the components for MDX to render when converting from markdown
         components: { ...defaultComponents, ...components },
-      } as PageLayoutProps);
+      } as unknown as MDXProps);
     }
     return child;
   });
+};
 
 export default PageLayout;

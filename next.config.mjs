@@ -5,6 +5,8 @@ import remarkMdxFrontmatter from "remark-mdx-frontmatter";
 import remarkUnwrapImages from "remark-unwrap-images";
 
 import { remarkStaticImage } from "./mdx-plugins/static-image.mjs";
+import { remarkInjectNextFrontmatter } from "./mdx-plugins/inject-next-frontmatter.mjs";
+import { remarkWrapInLayout } from "./mdx-plugins/wrap-in-layout.mjs";
 
 const withMDX = withMDXFactory({
   extension: /\.mdx?$/,
@@ -15,19 +17,21 @@ const withMDX = withMDXFactory({
     remarkPlugins: [
       [
         remarkFrontmatter,
+        // Use funky frontmatter fences so they render nicely on GitHub
         { type: "yaml", fence: { open: "```yaml", close: "```" } },
       ],
-      remarkMdxFrontmatter,
+      remarkInjectNextFrontmatter,
+      [remarkMdxFrontmatter, { name: "matter" }],
       remarkGfm,
       remarkUnwrapImages,
       remarkStaticImage,
+      remarkWrapInLayout,
     ],
     rehypePlugins: [],
     // If you use `MDXProvider`, uncomment the following line.
     // providerImportSource: "@mdx-js/react",
     // React Server Components don't support `createContext` so set
-    // as `undefined` as  `@next/mdx` sets it to `@mdx-js/react` by default.
-    // Uncomment the next line to fix the error
+    // as `undefined` (`@next/mdx` sets it to `@mdx-js/react` by default).
     providerImportSource: undefined,
   },
 });
