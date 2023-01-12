@@ -1,0 +1,106 @@
+<html lang="en">
+  <head>
+    <title>PICO-8 Unofficial Wiki - Player</title>
+    <meta name="robots" content="noindex, nofollow" />
+    <meta content="width=device-width, initial-scale=1" name="viewport" />
+    <meta name="description" content="PICO-8 Unofficial Wiki - Player" />
+    <link rel="icon" href="/favicon.ico" />
+  </head>
+  <body>
+    <style>
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+        border: 0;
+      }
+
+      html,
+      body {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        text-align: center;
+        background: #000;
+        color: #eee;
+      }
+
+      .canvas {
+        position: absolute;
+        width: 128px;
+        height: 128px;
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%, -50%);
+        image-rendering: pixelated;
+        image-rendering: optimizeSpeed;
+      }
+    </style>
+    <canvas
+      id="gamecanvas"
+      width="128"
+      height="128"
+      className="{styles.canvas}"
+    />
+    <script>
+      // TODO: Show some kind of loading state
+      // TODO: Require a click to start playing (audioContext permission issues,
+      // etc - see official template)
+
+      // Derived and heavily modified from https://gitlab.com/suborg/mobipico
+      window.addEventListener("DOMContentLoaded", async function () {
+        const cart = new URLSearchParams(window.location.search).get("cart");
+
+        if (typeof cart !== "string" || !cart.endsWith(".p8.png")) {
+          // TODO: Better error
+          throw new Error(`Cart must be a .p8.png file, got: "${cart}"`);
+        }
+
+        // Must be an absolute path on this domain (ie; start with '/')
+        if (!/^\/[^\/]/.test(cart)) {
+          // TODO: Better error
+          throw new Error(`Unable to load cart due to path error`);
+        }
+
+        const fName = cart.split("/").pop();
+
+        var gameCanvas = document.getElementById("gamecanvas");
+
+        let fileData;
+
+        try {
+          fileData = await fetch(cart).then((response) => response.blob());
+        } catch (e) {
+          console.error(e);
+          throw new Error(`Unable to load cart ${cart}`);
+        }
+
+        // TODO: What is this for?
+        gameCanvas.oncontextmenu = function (e) {
+          e.preventDefault();
+        };
+
+        document.title = fName;
+
+        // Setup PICO-8
+        window.Module = {};
+        window.Module.canvas = gameCanvas;
+        window.Module.doNotCaptureKeyboard = true;
+        window.pico8_buttons = [0, 0, 0, 0, 0, 0, 0, 0];
+        window.iii = 0;
+        window.ciii = 0;
+        window._cdpos = 0;
+        window._cartname = [fName];
+        //using internal loader of the engine
+        window.Module["arguments"] = [URL.createObjectURL(fileData)];
+
+        // Load and execute PICO-8
+        var s = document.createElement("script");
+        s.src = "/pico-8-player/engine-0.2.5e.js";
+        document.body.appendChild(s);
+      });
+    </script>
+  </body>
+</html>
