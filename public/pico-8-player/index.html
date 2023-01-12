@@ -53,7 +53,13 @@
       window.addEventListener("DOMContentLoaded", async function () {
         const cart = new URLSearchParams(window.location.search).get("cart");
 
-        if (typeof cart !== "string" || !cart.endsWith(".p8.png")) {
+        if (
+          typeof cart !== "string" ||
+          // We're only interested in .p8.png files, but sometimes those files
+          // are given a unique fingerprint/hash before the file extension,
+          // meaning we get files like .p8.beef123.png, so we allow those in.
+          !/\.p8(\.[a-fA-F0-9]+)?\.png$/.test(cart)
+        ) {
           // TODO: Better error
           throw new Error(`Cart must be a .p8.png file, got: "${cart}"`);
         }

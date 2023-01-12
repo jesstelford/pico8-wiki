@@ -3,6 +3,19 @@ import type { PropsWithChildren } from "react";
 import type { MDXProps } from "mdx/types";
 import Image from "next/image";
 
+const fixStaticAssetPathForCloudflare = (src: string) => {
+  // Cloudflare pages uses the Vercel build, which flattens the static assets
+  // from /_next/static/ to /static/, but for some reason Next.js doesn't know
+  // that, so we have to do it ourselves.
+  // The `src` prop can be a few different things, so we try to handle them
+  // all here.
+  if (process.env.NODE_ENV === "production") {
+    return src.replace(/^\/_next\//, "/");
+  } else {
+    return src;
+  }
+};
+
 const defaultComponents = {
   ol: ({ children }: { children: React.ReactNode }) => (
     <ol style={{ listStyle: "inside decimal" }}>{children}</ol>
@@ -11,20 +24,13 @@ const defaultComponents = {
     <ul style={{ listStyle: "inside disc" }}>{children}</ul>
   ),
   Image: ({ src, alt, ...props }: React.ComponentProps<typeof Image>) => {
-    // Cloudflare pages uses the Vercel build, which flattens the static assets
-    // from /_next/static/ to /static/, but for some reason Next.js doesn't know
-    // that, so we have to do it ourselves.
-    // The `src` prop can be a few different things, so we try to handle them
-    // all here.
-    if (process.env.NODE_ENV === "production") {
-      if (typeof src === "string") {
-        src = src.replace(/^\/_next\//, "/");
-      } else if (typeof src === "object") {
-        if ("src" in src) {
-          src.src = src.src.replace(/^\/_next\//, "/");
-        } else {
-          src.default.src = src.default.src.replace(/^\/_next\//, "/");
-        }
+    if (typeof src === "string") {
+      src = fixStaticAssetPathForCloudflare(src);
+    } else if (typeof src === "object") {
+      if ("src" in src) {
+        src.src = fixStaticAssetPathForCloudflare(src.src);
+      } else {
+        src.default.src = fixStaticAssetPathForCloudflare(src.default.src);
       }
     }
 
@@ -37,6 +43,15 @@ const defaultComponents = {
         // which calculates the blur at build time.
         {...(process.env.NODE_ENV === "production" && { placeholder: "blur" })}
         {...props}
+      />
+    );
+  },
+  Player: ({ cart }: { cart: string }) => {
+    return (
+      <iframe
+        src={`/pico-8-player/index.html?cart=${encodeURIComponent(
+          fixStaticAssetPathForCloudflare(cart)
+        )}`}
       />
     );
   },

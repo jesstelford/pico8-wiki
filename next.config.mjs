@@ -5,6 +5,7 @@ import remarkMdxFrontmatter from "remark-mdx-frontmatter";
 import remarkUnwrapImages from "remark-unwrap-images";
 
 import { remarkStaticImage } from "./mdx-plugins/static-image.mjs";
+import { remarkP8PngLoader } from "./mdx-plugins/p8-png-loader.mjs";
 import { remarkInjectNextFrontmatter } from "./mdx-plugins/inject-next-frontmatter.mjs";
 import { remarkWrapInLayout } from "./mdx-plugins/wrap-in-layout.mjs";
 
@@ -25,6 +26,7 @@ const withMDX = withMDXFactory({
       remarkGfm,
       remarkUnwrapImages,
       remarkStaticImage,
+      remarkP8PngLoader,
       remarkWrapInLayout,
     ],
     rehypePlugins: [],
