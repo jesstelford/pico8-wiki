@@ -717,6 +717,7 @@ var runtimeInitialized = false;
 var runtimeExited = false;
 
 function preRun() {
+  console.log('preRun');
  if (Module["preRun"]) {
   if (typeof Module["preRun"] == "function") Module["preRun"] = [ Module["preRun"] ];
   while (Module["preRun"].length) {
@@ -727,6 +728,7 @@ function preRun() {
 }
 
 function ensureInitRuntime() {
+  console.log('ensureInitRuntime');
  if (runtimeInitialized) return;
  runtimeInitialized = true;
  callRuntimeCallbacks(__ATINIT__);
@@ -7966,9 +7968,13 @@ function run(args) {
  if (runDependencies > 0) return;
  if (Module["calledRun"]) return;
  function doRun() {
+    console.log('doRun');
   if (Module["calledRun"]) return;
   Module["calledRun"] = true;
-  if (ABORT) return;
+  if (ABORT) {
+      console.log('ABORT');
+      return;
+    }
   ensureInitRuntime();
   preMain();
   if (Module["onRuntimeInitialized"]) Module["onRuntimeInitialized"]();

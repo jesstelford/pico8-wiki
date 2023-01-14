@@ -46,7 +46,9 @@
 
       // Derived and heavily modified from https://gitlab.com/suborg/mobipico
       window.addEventListener("DOMContentLoaded", async function () {
-        const cart = new URLSearchParams(window.location.search).get("cart");
+        const cart = new URLSearchParams(window.location.hash.slice(1)).get(
+          "cart"
+        );
 
         if (
           typeof cart !== "string" ||
@@ -99,7 +101,10 @@
 
         // Load and execute PICO-8
         var s = document.createElement("script");
-        s.src = "/pico-8-player/engine-0.2.5e.js";
+
+        // NOTE: We use the version as a file fingerprint here so the browser
+        // can aggressively cache it, but it's easily replaced when we move to         // a new version.
+        s.src = "/pico-8-player/0.2.5e.js";
         document.body.appendChild(s);
       });
     </script>

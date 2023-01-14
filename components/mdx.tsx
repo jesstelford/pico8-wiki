@@ -49,7 +49,10 @@ const defaultComponents = {
   Player: ({ cart }: { cart: string }) => {
     return (
       <iframe
-        src={`/pico-8-player/index.html?cart=${encodeURIComponent(
+        // NOTE: We use the version as a file fingerprint here so the browser
+        // can aggressively cache it, but it's easily replaced when we move to a
+        // new version.
+        src={`/pico-8-player/0.2.5e.html#cart=${encodeURIComponent(
           fixStaticAssetPathForCloudflare(cart)
         )}`}
       />
