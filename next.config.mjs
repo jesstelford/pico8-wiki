@@ -18,10 +18,11 @@ const withMDX = withMDXFactory({
     remarkPlugins: [
       [
         remarkFrontmatter,
-        // Use funky frontmatter fences so they render nicely on GitHub
+        // Use funky frontmatter fences so they render nicely on GitHub, and
+        // remind editors what format it should be in
         { type: "yaml", fence: { open: "```yaml", close: "```" } },
       ],
-      remarkInjectNextFrontmatter,
+      [remarkInjectNextFrontmatter, { type: "yaml" }],
       [remarkMdxFrontmatter, { name: "matter" }],
       remarkGfm,
       remarkUnwrapImages,
