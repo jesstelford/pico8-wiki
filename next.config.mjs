@@ -50,8 +50,10 @@ const nextConfig = {
   // add mdx file support
   pageExtensions: ["ts", "tsx", "js", "jsx", "md", "mdx"],
   images: {
-    // Cloudflare Pages can't run the optimiser, and their own optimiser costs
-    // money
+    // Optimising .p8.png files would mean losing the embedded code, so we
+    // disable it.
+    // NOTE: Also, Cloudflare Pages can't run the optimiser, and their own
+    // optimiser costs money
     unoptimized: true,
   },
 };
