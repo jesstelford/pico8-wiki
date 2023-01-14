@@ -17,12 +17,6 @@ const fixStaticAssetPathForCloudflare = (src: string) => {
 };
 
 const defaultComponents = {
-  ol: ({ children }: { children: React.ReactNode }) => (
-    <ol style={{ listStyle: "inside decimal" }}>{children}</ol>
-  ),
-  ul: ({ children }: { children: React.ReactNode }) => (
-    <ul style={{ listStyle: "inside disc" }}>{children}</ul>
-  ),
   Image: ({ src, alt, ...props }: React.ComponentProps<typeof Image>) => {
     if (typeof src === "string") {
       src = fixStaticAssetPathForCloudflare(src);
