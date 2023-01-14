@@ -84,11 +84,10 @@ export const remarkWrapInLayout = () => (tree, file, done) => {
         },
       },
     },
-
     {
       type: "mdxjsEsm",
       value:
-        "export default (props) => <PageLayout {...props} matter={matter} />",
+        "export default (props) => <PageLayout {...props} matter={matter} components={typeof components !== 'undefined' ? components : undefined} />",
       data: {
         estree: {
           type: "Program",
@@ -130,6 +129,45 @@ export const remarkWrapInLayout = () => (tree, file, done) => {
                           expression: {
                             type: "Identifier",
                             name: "matter",
+                          },
+                        },
+                      },
+                      {
+                        type: "JSXAttribute",
+                        name: {
+                          type: "JSXIdentifier",
+                          name: "components",
+                        },
+                        value: {
+                          type: "JSXExpressionContainer",
+                          expression: {
+                            type: "ConditionalExpression",
+                            test: {
+                              type: "BinaryExpression",
+                              left: {
+                                type: "UnaryExpression",
+                                operator: "typeof",
+                                prefix: true,
+                                argument: {
+                                  type: "Identifier",
+                                  name: "components",
+                                },
+                              },
+                              operator: "!==",
+                              right: {
+                                type: "Literal",
+                                value: "undefined",
+                                raw: "'undefined'",
+                              },
+                            },
+                            consequent: {
+                              type: "Identifier",
+                              name: "components",
+                            },
+                            alternate: {
+                              type: "Identifier",
+                              name: "undefined",
+                            },
                           },
                         },
                       },
