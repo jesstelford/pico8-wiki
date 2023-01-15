@@ -11,11 +11,13 @@ backend:
   name: github
   branch: main
   repo: jesstelford/pico8-wiki
+  base_url: https://pico8-wiki.pages.dev/
   # Cleaner PRs with squash commits
   squash_merges: true
   use_graphql: true
   # this is needed to fork the private repo
   auth_scope: repo
+  auth_endpoint: api/github-oauth
   # Allow non-owners to create forks and open PRs as part of the publishing
   # flow.
   # See: https://www.netlifycms.org/docs/open-authoring/
