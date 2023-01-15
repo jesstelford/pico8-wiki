@@ -3,9 +3,6 @@
 // - https://github.com/gr2m/cloudflare-worker-github-oauth-login
 import type { NextRequest } from "next/server";
 
-const client_id = process.env.OAUTH_CLIENT_ID;
-const client_secret = process.env.OAUTH_CLIENT_SECRET;
-
 /** Render a html response with a script to finish a client-side github authentication */
 function renderResponse(status: "success" | "error", content: any) {
   return `<!DOCTYPE html>
@@ -59,6 +56,9 @@ export function auth(req: NextRequest) {
     });
   }
 
+  // @ts-expect-error
+  const client_id = req.env.GITHUB_OAUTH_CLIENT_ID;
+
   return Response.redirect(
     `https://github.com/login/oauth/authorize?client_id=${client_id}&scope=${encodeURIComponent(
       "repo,user"
@@ -83,6 +83,11 @@ export async function callback(req: NextRequest) {
       },
     });
   }
+
+  // @ts-expect-error
+  const client_id = req.env.GITHUB_OAUTH_CLIENT_ID;
+  // @ts-expect-error
+  const client_secret = req.env.GITHUB_OAUTH_CLIENT_SECRET;
 
   try {
     const { code } = await req.json();
