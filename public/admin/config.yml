@@ -1,0 +1,41 @@
+# when using the default proxy server port
+local_backend: true
+
+publish_mode: editorial_workflow
+# Media files will be stored in the repo here
+media_folder: "public/cms/media"
+# The src attribute for uploaded media will begin with this path
+public_folder: "/cms/media"
+# We're hosted on GitHub
+backend:
+  name: github
+  branch: main
+  repo: jesstelford/pico8-wiki
+  # Cleaner PRs with squash commits
+  squash_merges: true
+  use_graphql: true
+  # this is needed to fork the private repo
+  auth_scope: repo
+  # Allow non-owners to create forks and open PRs as part of the publishing
+  # flow.
+  # See: https://www.netlifycms.org/docs/open-authoring/
+  open_authoring: true
+collections:
+  - name: "wiki" # Used in routes, e.g., /admin/collections/wiki
+    label: "Wiki" # Used in the UI
+    folder: "app" # The path to the folder where the documents are stored
+    path: "{{slug}}/page"
+    media_folder: ""
+    public_folder: ""
+    create: true # Allow users to create new documents in this collection
+    identifier_field: "title"
+    # {{slug}} == slugify(config.identifier_field)
+    slug: "{{slug}}"
+    # We'll later treat the body as markdown, this extension value is only for
+    # file naming afaict
+    extension: "mdx"
+    format: "yaml-frontmatter"
+    frontmatter_delimiter: ["```yaml", "```"]
+    fields: # The fields for each document, usually in front matter
+      - { label: "Title", name: "title", widget: "string" }
+      - { label: "Body", name: "body", widget: "markdown" }
