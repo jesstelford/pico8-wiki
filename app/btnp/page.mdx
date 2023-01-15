@@ -1,13 +1,13 @@
 ```yaml
 title: Btnp
 ```
-
 # {matter.title}
+
+<a href={`/admin/#/edit/wiki/${matter._next.filePath.slice('/').pop()}`}>Edit this page</a>
+
 
 <Player cart="./fireworks.p8.png" />
 
-/#/edit/posts/test
-<a href={`/admin/#/edit/wiki/${matter._next.filePath.slice('/').pop()}`}>Edit this page</a>
 
 ![p8sxii example](./p8scii-example.webp)
 
@@ -51,7 +51,7 @@ These can be used as an argument to `btnp()` (or
 surround the value in quotes, because these are not strings, they are
 predefined global variables with single glyphs for names.
 
-``` lua
+```lua
 -- test for the "left" button, typed as shift + l
 if btnp(⬅️) and x > 0 then
  x -= 1
@@ -60,7 +60,7 @@ end
 
 ## Examples
 
-``` lua
+```lua
 sel = 0
 items = {"a", "b", "c", "d",
          "e", "f", "g", "h"}
@@ -87,10 +87,10 @@ Try replacing `btnp()` with `btn()` to see what happens.
 
 ## See also
 
-- [Controllers](/controllers)
-- [Configuration](/configuration)
-- [SDL](/sdl)
-- [`btn()`](/btn)
+* [Controllers](/controllers)
+* [Configuration](/configuration)
+* [SDL](/sdl)
+* [`btn()`](/btn)
 
 [Category:Reference](Category:Reference "wikilink")
 [Category:API](Category:API "wikilink")
